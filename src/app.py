@@ -53,29 +53,26 @@ def add_member():
         if not request_body:
             return jsonify({"error": "Request body is missing"}), 400
         jackson_family.add_member(request_body)
-        return jsonify({"message": "Member added successfully"}), 201
+        return jsonify({"message": "Member added successfully"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 @app.route('/members/<int:id>', methods=['DELETE'])
 def delete_member(id):
-    # return jsonify(member), 200
     try:
-        member = jackson_family.delete_member(id)
+        member = jackson_family.get_member(id)
         if not member:
             return jsonify({"error": "Request id is missing"}), 400
         jackson_family.delete_member(id)
-        return jsonify({"message": "Member deleted successfully"}), 201
+        return jsonify({"message": "Member deleted successfully"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-# @app.route('/members/<int:member_id)', methods=['DELETE'])
-# def delete_one_member():
-    # todos.pop(position)
-    # return jsonify(todos)
-#     pass
+        #
+        # member = jackson_family.delete_member(id)
+        # return jsonify(member), 200
+        #
 
-        
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
