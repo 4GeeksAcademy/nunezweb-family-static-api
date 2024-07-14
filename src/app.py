@@ -14,7 +14,7 @@ CORS(app)
 
 # create the jackson family object
 jackson_family = FamilyStructure("Jackson")
-member_one={"first_name": "John", "age": 33, "lucky_numbers":[7, 13, 22]} 
+member_one={"first_name": "Tommy", "age": 33, "lucky_numbers":[7, 13, 22]} 
 member_two={"first_name": "Jane", "age": 35, "lucky_numbers":[10, 14, 3]} 
 member_three={"first_name": "Jimmy", "age": 5, "lucky_numbers":[1]} 
 jackson_family.add_member(member_one)
@@ -35,18 +35,21 @@ def sitemap():
 def handle_hello():
     # this is how you can use the Family datastructure by calling its methods
     members = jackson_family.get_all_members()
-    response_body = {
-        "family": members
-    }
+    response_body = members
     return jsonify(response_body), 200
-    # return jsonify(members), 200
 
-@app.route('/members/<int:id>', methods=['GET'])
+
+@app.route('/member/<int:id>', methods=['GET'])
 def get_member_by_id(id):
-    member = jackson_family.get_member(id)
-    return jsonify(member), 200
+    try:
+        member = jackson_family.get_member(id)
+        if not member:
+            return jsonify({"error": "Request member is missing"}), 200
+        return jsonify(member), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-@app.route('/members', methods=['POST'])
+@app.route('/member', methods=['POST'])
 def add_member():
     try:
         request_body = request.json
@@ -57,12 +60,12 @@ def add_member():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/members/<int:id>', methods=['DELETE'])
+@app.route('/member/<int:id>', methods=['DELETE'])
 def delete_member(id):
     try:
         member = jackson_family.get_member(id)
         if not member:
-            return jsonify({"error": "Request id is missing"}), 400
+            return jsonify({"error": "Request id is missing"}), 200
         jackson_family.delete_member(id)
         return jsonify({"message": "Member deleted successfully"}), 200
     except Exception as e:
