@@ -14,7 +14,7 @@ CORS(app)
 
 # create the jackson family object
 jackson_family = FamilyStructure("Jackson")
-member_one={"first_name": "Tommy", "age": 33, "lucky_numbers":[7, 13, 22]} 
+member_one={"first_name": "John", "age": 33, "lucky_numbers":[7, 13, 22]} 
 member_two={"first_name": "Jane", "age": 35, "lucky_numbers":[10, 14, 3]} 
 member_three={"first_name": "Jimmy", "age": 5, "lucky_numbers":[1]} 
 jackson_family.add_member(member_one)
@@ -67,15 +67,10 @@ def delete_member(id):
         if not member:
             return jsonify({"error": "Request id is missing"}), 200
         jackson_family.delete_member(id)
-        return jsonify({"message": "Member deleted successfully"}), 200
+        return {"done": True}, 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-        #
-        # member = jackson_family.delete_member(id)
-        # return jsonify(member), 200
-        #
-
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
