@@ -16,7 +16,7 @@ class FamilyStructure:
         self._members = []
 
     # read-only: Use this method to generate random members ID's when adding members into the list
-    def generateId(self):
+    def _generateId(self):
         generated_id = self._next_id
         self._next_id += 1
         return generated_id
@@ -33,7 +33,7 @@ class FamilyStructure:
         if "id" in member:
             new_member["id"] = member["id"]
         else:
-            new_member["id"] = self.generateId()
+            new_member["id"] = self._generateId()
 
         self._members.append(new_member)
         return new_member
